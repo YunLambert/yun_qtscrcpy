@@ -32,3 +32,9 @@ HEADERS += \
 
 FORMS += \
         dialog.ui
+# 子工程
+include($$PWD/adb/adb.pri)
+
+# 包含目录
+INCLUDEPATH+=\
+        $$PWD/adb

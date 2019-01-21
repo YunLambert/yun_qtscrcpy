@@ -1,6 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
-#include<QProcess>
+#include "adbprocess.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -16,11 +16,10 @@ Dialog::~Dialog()
 
 void Dialog::on_pushButton_clicked()
 {
-    QString program = "notepad";
     QStringList arguments;
-    arguments << "-style" << "fusion";
+    arguments << "devices";
 
-    QProcess *myProcess = new QProcess(this);
+    AdbProcess *myProcess = new AdbProcess(this);
    //myProcess->start(program, arguments);
-    myProcess->start(program,Q_NULLPTR);
+    myProcess->execute("",arguments);
 }
