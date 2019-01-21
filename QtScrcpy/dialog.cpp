@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include "adbprocess.h"
+#include <QDebug>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -20,6 +21,8 @@ void Dialog::on_pushButton_clicked()
     arguments << "devices";
 
     AdbProcess *myProcess = new AdbProcess(this);
-   //myProcess->start(program, arguments);
-    myProcess->execute("",arguments);
+    connect(myProcess,&AdbProcess::adbProcessResult,this,[this](AdbProcess::ADB_EXEC_RESULT processResult){
+        qDebug()<<">>>>>>>>>>"<<processResult;
+    });
+    myProcess->reverseRemove("","scrcpy");
 }
