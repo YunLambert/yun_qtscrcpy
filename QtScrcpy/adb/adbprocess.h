@@ -19,6 +19,7 @@ public:
     void removePath(const QString& serial,const QString& path);
     void reverse(const QString& serial,const QString& deviceSocketName,quint16 localPort);
     void reverseRemove(const QString& serial,const QString& deviceSocketName);
+    QStringList getDeviceSerialFromStdOut();
     static QString getAdbPath();
 
 signals:
@@ -28,6 +29,8 @@ private:
     void initSignals();
 
     static QString s_adbPath;
+    QString m_standardOutput="";    //标准输出
+    QString m_errorOutput="";       //标准错误
 };
 
 #endif // ADBPROCESS_H

@@ -70,6 +70,22 @@ void AdbProcess::reverseRemove(const QString &serial, const QString &deviceSocke
     execute(serial,adbArgs);
 }
 
+QStringList AdbProcess::getDeviceSerialFromStdOut()
+{
+    //"List of devices attached \r\nZ2XDU15909002552\tdevice"
+    QStringList serials;
+    QStringList devicesInfoList=m_standardOutput.split(QRegExp("\r\n|\n"),QString::SkipEmptyParts);  //linux与windows的换行符不同
+    for(QString deviceInfo:devicesInfoList)
+    {
+        QStringList deviceInfos=deviceInfo.split(QRegExp("\t"),QString::SkipEmptyParts);
+        if(deviceInfos.count()==2 && deviceInfos[1].compare("device")==0)
+        {
+            serials<<deviceInfos[0];
+        }
+    }
+    return serials;
+}
+
 void AdbProcess::initSignals()
 {
     connect(this,&QProcess::errorOccurred,this,[this](QProcess::ProcessError error){
@@ -90,10 +106,12 @@ void AdbProcess::initSignals()
     });
 
     connect(this,&QProcess::readyReadStandardError,this,[this](){
-        qDebug()<<readAllStandardError();
+        m_errorOutput=QString::fromLocal8Bit(readAllStandardError()).trimmed();
+        qDebug()<<m_errorOutput;
     });
     connect(this,&QProcess::readyReadStandardOutput,this,[this](){
-        qDebug()<<readAllStandardOutput();
+        m_standardOutput=QString::fromLocal8Bit(readAllStandardOutput()).trimmed();
+        qDebug()<<m_standardOutput;
     });
     connect(this,&QProcess::started,this,[this](){
          emit adbProcessResult(AER_SUCCESS_START);
