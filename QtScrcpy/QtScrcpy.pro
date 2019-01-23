@@ -32,9 +32,11 @@ HEADERS += \
 
 FORMS += \
         dialog.ui
-# 子工程
+# 子模块
 include($$PWD/adb/adb.pri)
+include($$PWD/server/server.pri)
 
 # 包含目录
 INCLUDEPATH+=\
-        $$PWD/adb
+        $$PWD/adb \
+        $$PWD/server

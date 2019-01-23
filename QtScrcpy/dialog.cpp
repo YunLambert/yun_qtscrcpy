@@ -18,13 +18,21 @@ Dialog::~Dialog()
 void Dialog::on_pushButton_clicked()
 {
     QStringList arguments;
-    arguments << "devices";
+    //arguments << "devices";
+    arguments<<"shell";
+    arguments<<"ip";
+    arguments<<"-f";
+    arguments<<"inet";
+    arguments<<"addr";
+    arguments<<"show";
+    arguments<<"wlan0";
 
     AdbProcess *myProcess = new AdbProcess(this);
     connect(myProcess,&AdbProcess::adbProcessResult,this,[this,myProcess](AdbProcess::ADB_EXEC_RESULT processResult){
         qDebug()<<">>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<processResult;
         if(AdbProcess::AER_SUCCESS_EXEC==processResult){
-            qDebug()<<myProcess->getDeviceSerialFromStdOut().join("*");
+            //qDebug()<<myProcess->getDeviceSerialFromStdOut().join("*");
+            qDebug()<<myProcess->getDeviceIPFromStdOut();
         }
     });
     //->push("","path1","path2");

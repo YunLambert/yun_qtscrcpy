@@ -20,6 +20,9 @@ public:
     void reverse(const QString& serial,const QString& deviceSocketName,quint16 localPort);
     void reverseRemove(const QString& serial,const QString& deviceSocketName);
     QStringList getDeviceSerialFromStdOut();
+    QString getDeviceIPFromStdOut();
+    QString getStdOut();
+    QString getErrorOut();
     static QString getAdbPath();
 
 signals:

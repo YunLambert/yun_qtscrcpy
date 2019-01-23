@@ -86,6 +86,31 @@ QStringList AdbProcess::getDeviceSerialFromStdOut()
     return serials;
 }
 
+QString AdbProcess::getDeviceIPFromStdOut()
+{
+    //"9: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc mq state UP qlen 1000\r\r\n
+    //inet 192.168.1.105/24 brd 192.168.1.255 scope global wlan0\r\r\n
+    //valid_lft forever preferred_lft forever"
+    QString ip="";
+    QString strIPExp="inet [\\d.]*";
+    QRegExp ipRegExp(strIPExp,Qt::CaseInsensitive);
+    if(ipRegExp.indexIn(m_standardOutput)!=-1){
+        ip=ipRegExp.cap(0);
+        ip=ip.right(ip.size()-5);
+    }
+    return ip;
+}
+
+QString AdbProcess::getStdOut()
+{
+    return m_standardOutput;
+}
+
+QString AdbProcess::getErrorOut()
+{
+    return m_errorOutput;
+}
+
 void AdbProcess::initSignals()
 {
     connect(this,&QProcess::errorOccurred,this,[this](QProcess::ProcessError error){
