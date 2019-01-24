@@ -35,8 +35,19 @@ FORMS += \
 # 子模块
 include($$PWD/adb/adb.pri)
 include($$PWD/server/server.pri)
+include($$PWD/decoder/decoder.pri)
 
 # 包含目录
 INCLUDEPATH+=\
         $$PWD/adb \
-        $$PWD/server
+        $$PWD/server \
+        $$PWD/decoder \
+        $$PWD/tools/ffmpeg/include
+
+# 依赖模块
+LIBS+=\
+      -L$$PWD/tools/ffmpeg/lib -lavformat \
+      -L$$PWD/tools/ffmpeg/lib -lavcodec \
+      -L$$PWD/tools/ffmpeg/lib -lavutil \
+      -L$$PWD/tools/ffmpeg/lib -lswscale \
+      -luser32
