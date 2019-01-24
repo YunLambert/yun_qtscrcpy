@@ -11,7 +11,7 @@ server::server(QObject *parent)
     connect(&m_workProcess,&AdbProcess::adbProcessResult,this,&server::onWorkProcessResult);
     connect(&m_serverProcess,&AdbProcess::adbProcessResult,this,&server::onWorkProcessResult);
     connect(&m_serverSocket,&QTcpServer::newConnection,this,[this](){
-        m_deviceSocket=m_serverSocket.nextPendingConnection();
+        m_deviceSocket=dynamic_cast<DeviceSocket*>(m_serverSocket.nextPendingConnection());
 
         //device name,size  --->  scrcpy-server.jar会返回
         QString deviceName;

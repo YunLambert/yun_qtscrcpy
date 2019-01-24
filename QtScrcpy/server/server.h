@@ -2,9 +2,11 @@
 #define SERVER_H
 #include <QObject>
 #include "adbprocess.h"
+#include "devicesocket.h"
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QSize>
+#include "tcpserver.h"
 
 class server:public QObject
 {
@@ -55,8 +57,8 @@ private:
     bool m_serverCopiedToDevice=false;  //标志是否成功将apk复制到了android设备上
     bool m_enableReverse=false;
 
-    QTcpServer m_serverSocket;
-    QTcpSocket* m_deviceSocket=Q_NULLPTR;
+    TcpServer m_serverSocket;
+    DeviceSocket* m_deviceSocket=Q_NULLPTR;
 
 };
 
