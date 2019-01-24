@@ -2,6 +2,9 @@
 #define SERVER_H
 #include <QObject>
 #include "adbprocess.h"
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QSize>
 
 class server:public QObject
 {
@@ -18,9 +21,11 @@ public:
     server(QObject *parent=Q_NULLPTR);
 
     bool start(const QString& serial,quint16 localPort,quint16 maxSize,quint32 bitRate);
+    void stop();
 
 signals:
     void serverStartResult(bool success);
+    void connectToResult(bool success,const QString& deviceName,const QSize& size);
 
 private slots:
     void onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult);
@@ -33,6 +38,7 @@ private:
     bool disableTunnelReverse();
     bool execute();
     QString getServerPath();
+    bool readInfo(QString& deviceName,QSize& size);
 
 
 private:
@@ -48,6 +54,9 @@ private:
     QString m_serverPath="";
     bool m_serverCopiedToDevice=false;  //标志是否成功将apk复制到了android设备上
     bool m_enableReverse=false;
+
+    QTcpServer m_serverSocket;
+    QTcpSocket* m_deviceSocket=Q_NULLPTR;
 
 };
 

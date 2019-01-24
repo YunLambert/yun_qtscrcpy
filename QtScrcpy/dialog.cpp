@@ -8,6 +8,12 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    connect(&m_server,&server::serverStartResult,this,[this](bool success){
+        qDebug()<<"server start"<<success;
+    });
+    connect(&m_server,&server::connectToResult,this,[this](bool success,const QString& deviceName,const QSize& size){
+        qDebug()<<"connectToResult"<<success<<deviceName<<size;
+    });
 }
 
 Dialog::~Dialog()
@@ -17,6 +23,7 @@ Dialog::~Dialog()
 
 void Dialog::on_pushButton_clicked()
 {
+    /*
     QStringList arguments;
     //arguments << "devices";
     arguments<<"shell";
@@ -40,4 +47,11 @@ void Dialog::on_pushButton_clicked()
     //->reverse("","scrcpy",5037);
     //->reverseRemove("","scrcpy");
     myProcess->execute("",arguments);
+    */
+    m_server.start("",27183,720,8000000);
+}
+
+void Dialog::on_pushButton_2_clicked()
+{
+    m_server.stop();
 }
