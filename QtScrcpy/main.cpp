@@ -15,5 +15,8 @@ int main(int argc, char *argv[])
     Dialog w;
     w.show();
 
-    return a.exec();
+    //return a.exec();
+    int ret=a.exec();
+    Decoder::init();
+    return ret;
 }
