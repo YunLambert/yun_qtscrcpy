@@ -1,10 +1,10 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-01-20T23:23:44
+# Project created by QtCreator 2019-06-21T15:53:51
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -32,24 +32,10 @@ HEADERS += \
 
 FORMS += \
         dialog.ui
-# 子模块
+
+# 子工程
 include($$PWD/adb/adb.pri)
-include($$PWD/server/server.pri)
-include($$PWD/decoder/decoder.pri)
-include($$PWD/common/common.pri)
 
 # 包含目录
-INCLUDEPATH+=\
-        $$PWD/adb \
-        $$PWD/server \
-        $$PWD/decoder \
-        $$PWD/common \
-        $$PWD/tools/ffmpeg/include
-
-# 依赖模块
-LIBS+=\
-      -L$$PWD/tools/ffmpeg/lib -lavformat \
-      -L$$PWD/tools/ffmpeg/lib -lavcodec \
-      -L$$PWD/tools/ffmpeg/lib -lavutil \
-      -L$$PWD/tools/ffmpeg/lib -lswscale \
-      -luser32
+INCLUDEPATH += \
+    $$PWD/adb

@@ -1,4 +1,0 @@
-HEADERS += \
-    $$PWD/qscrcpyevent.h
-
-
