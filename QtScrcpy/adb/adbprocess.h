@@ -12,6 +12,9 @@ public:
 private:
     void initSignals();
     static QString s_adbPath;
+
+private:
+    void execute(const QString& serial, const QStringList& args);
 };
 
 #endif // ADBPROCESS_H

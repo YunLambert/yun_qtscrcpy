@@ -2,6 +2,7 @@
 #include <QDir>
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <QDebug>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -17,11 +18,10 @@ Dialog::~Dialog()
 
 void Dialog::on_pushButton_clicked()
 {
-    QString program = "..\\third_party\\adb\\win\\adb.exe";
+    qDebug()<<QCoreApplication::applicationDirPath();
     QStringList arguments;
-    arguments << "C:\\Users\\Administrator\\Desktop\\test.txt";
+    arguments << "";
 
     AdbProcess *myProcess = new AdbProcess(this);
-    myProcess->start(program,Q_NULLPTR);
-
+    myProcess->start(AdbProcess::getAdbPath(),Q_NULLPTR);
 }
