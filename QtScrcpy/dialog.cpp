@@ -20,8 +20,12 @@ void Dialog::on_pushButton_clicked()
 {
     qDebug()<<QCoreApplication::applicationDirPath();
     QStringList arguments;
-    arguments << "";
+    arguments << "devices";
 
     AdbProcess *myProcess = new AdbProcess(this);
-    myProcess->start(AdbProcess::getAdbPath(),Q_NULLPTR);
+    //myProcess->start(AdbProcess::getAdbPath(),Q_NULLPTR);
+    connect(myProcess, &AdbProcess::adbProcessResult,this,[this](AdbProcess::ADB_EXEC_RESULT processResult){
+        qDebug()<<">>>>>>>>>>"<<processResult;
+    });
+    myProcess->execute("", arguments);
 }

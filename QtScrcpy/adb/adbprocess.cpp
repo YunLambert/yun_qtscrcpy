@@ -28,11 +28,22 @@ QString AdbProcess::getAdbPath()
 void AdbProcess::initSignals()
 {
     connect(this, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error){
+        if (QProcess::FailedToStart == error) {
+            emit adbProcessResult(AER_ERROR_MISSING_BINARY);
+        }
+        else
+        {
+            emit adbProcessResult(AER_ERROR_START);
+        }
         qDebug()<<error;
     });
 
     connect(this, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
             this, [this](int exitCode, QProcess::ExitStatus exitStatus){
+        if (QProcess::NormalExit == exitStatus && exitCode == 0)
+            emit adbProcessResult(AER_SUCCESS_EXEC);
+        else
+            emit adbProcessResult(AER_ERROR_EXEC);
         qDebug()<<exitCode<<exitStatus;
     });
 
@@ -46,7 +57,7 @@ void AdbProcess::initSignals()
     });
 
     connect(this,&QProcess::started,this,[this](){
-        qDebug()<<"start!";
+        emit adbProcessResult(AER_SUCCESS_START);
     });
 }
 
