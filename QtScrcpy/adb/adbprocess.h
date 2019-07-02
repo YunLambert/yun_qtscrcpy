@@ -24,9 +24,17 @@ signals:
 private:
     void initSignals();
     static QString s_adbPath;
+    QString m_standardOutput = "";
+    QString m_errorOutput = "";
 
 public:
     void execute(const QString& serial, const QStringList& args);
+    void push(const QString& serial, const QString& local, const QString& remote);
+    void removePath(const QString& serial, const QString& path);
+    void reverse(const QString& serial, const QString& deviceSocketName, quint16 localPort);
+    void reverseRemove(const QString& serial, const QString& deviceSocketName);
+
+    QStringList getDevicesSerialFromStdOut();
 };
 
 #endif // ADBPROCESS_H
