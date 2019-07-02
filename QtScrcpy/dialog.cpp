@@ -20,7 +20,14 @@ void Dialog::on_pushButton_clicked()  //测试代码部分
 {
     qDebug()<<QCoreApplication::applicationDirPath();
     QStringList arguments;
-    arguments << "devices";
+    //arguments << "devices";
+    arguments << "shell";
+    arguments <<"ip";
+    arguments <<"-f";
+    arguments <<"inet";
+    arguments <<"addr";
+    arguments <<"show";
+    arguments <<"wlan0";
 
     AdbProcess *myProcess = new AdbProcess(this);
     //myProcess->start(AdbProcess::getAdbPath(),Q_NULLPTR);
@@ -28,7 +35,8 @@ void Dialog::on_pushButton_clicked()  //测试代码部分
         qDebug()<<">>>>>>>>>>"<<processResult;
         if (processResult == AdbProcess::AER_SUCCESS_EXEC)
         {
-            qDebug()<<myProcess->getDevicesSerialFromStdOut().join("*");
+           // qDebug()<<myProcess->getDevicesSerialFromStdOut().join("*");
+            qDebug()<<myProcess->getDeviceIPFromStdOut();
         }
     });
     //test 启动：myProcess->execute("", arguments);

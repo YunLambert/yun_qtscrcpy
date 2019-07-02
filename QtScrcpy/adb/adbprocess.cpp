@@ -116,11 +116,24 @@ QStringList AdbProcess::getDevicesSerialFromStdOut()
     QStringList devicesInfoList = m_standardOutput.split(QRegExp("\r\n|\n"), QString::SkipEmptyParts);
     for (QString deviceInfo : devicesInfoList)
     {
-        QStringList deviceInfos = deviceInfo.split(QRegExp("\r\n|\n"), QString::SkipEmptyParts);
-        if (deviceInfos.count() == 2 && deviceInfos[1].compare("device"))
+        QStringList deviceInfos = deviceInfo.split(QRegExp("\t"), QString::SkipEmptyParts);
+        if (deviceInfos.count() == 2 && deviceInfos[1].compare("device")==0)
         {
             serials << deviceInfos[0];
         }
     }
     return serials;
+}
+
+QString AdbProcess::getDeviceIPFromStdOut()
+{
+    QString ip="";
+    QString strIPExp = "inet [\\d.]*";
+    QRegExp ipRegExp(strIPExp, Qt::CaseInsensitive);
+    if (ipRegExp.indexIn(m_standardOutput)!=-1)
+    {
+        ip = ipRegExp.cap(0);
+        ip = ip.right(ip.size()-5);
+    }
+    return ip;
 }
