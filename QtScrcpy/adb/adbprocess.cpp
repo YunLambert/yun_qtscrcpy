@@ -137,3 +137,13 @@ QString AdbProcess::getDeviceIPFromStdOut()
     }
     return ip;
 }
+
+QString AdbProcess::getStdOut()
+{
+    return m_standardOutput;
+}
+
+QString AdbProcess::getErrorOut()
+{
+    return m_errorOutput;
+}

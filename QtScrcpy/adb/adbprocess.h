@@ -36,6 +36,8 @@ public:
 
     QStringList getDevicesSerialFromStdOut();
     QString getDeviceIPFromStdOut();
+    QString getStdOut();
+    QString getErrorOut();
 };
 
 #endif // ADBPROCESS_H
