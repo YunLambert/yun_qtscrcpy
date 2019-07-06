@@ -1,4 +1,3 @@
-#include "adbprocess.h"
 #include <QDir>
 #include "dialog.h"
 #include "ui_dialog.h"
@@ -9,6 +8,12 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    connect(&m_server, &server::serverStartResult,this,[this](bool success){
+        qDebug()<<"server start"<<success;
+    });
+    connect(&m_server, &server::connectToResult,this,[this](bool success, const QString& deviceName, const QSize& size){
+        qDebug()<<"connectToResult"<<success<<deviceName<<size;
+    });
 }
 
 Dialog::~Dialog()
@@ -16,8 +21,9 @@ Dialog::~Dialog()
     delete ui;
 }
 
-void Dialog::on_pushButton_clicked()  //测试代码部分
+void Dialog::on_startServerBtn_clicked()  //测试代码部分
 {
+    /*QProcess封装adb
     qDebug()<<QCoreApplication::applicationDirPath();
     QStringList arguments;
     //arguments << "devices";
@@ -45,4 +51,11 @@ void Dialog::on_pushButton_clicked()  //测试代码部分
     //test reverse: myProcess->reverse("", "scrcpy", 5037);
     //test reverseremove: myProcess->reverseRemove("", "scrcpy");
     myProcess->execute("", arguments);
+    */
+    m_server.start("",27183,720,8000000);
+}
+
+void Dialog::on_stopServerBtn_clicked()
+{
+    m_server.stop();
 }

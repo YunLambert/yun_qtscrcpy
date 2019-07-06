@@ -1,7 +1,9 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include <QObject>
-#include <QTcpSocket
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QSize>
 #include "adbprocess.h"
 
 class server:public QObject
@@ -19,9 +21,11 @@ class server:public QObject
 public:
     server(QObject *parent = Q_NULLPTR);
     bool start(const QString& serial,quint16 localPort, quint16 maxSize, quint32 bitRate);
+    void stop();
 
 signals:
     void serverStartResult(bool success);
+    void connectToResult(bool success, const QString& deviceName, const QSize& size);
 
 private slots:
     void onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult);
@@ -34,6 +38,7 @@ private:
     bool disableTunnelReverse();
     bool execute();
     QString getServerPath();
+    bool readInfo(QString &deviceName,QSize &size);
 
 private:
     QString m_serial = "";

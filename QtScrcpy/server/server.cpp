@@ -2,13 +2,31 @@
 #include <QFileInfo>
 #include <QCoreApplication>
 
-#define DEVICE_SERVER_PATH "/data/local/tmp/scrcpy-server.jar"
-#define SOCKET_NAME "scrcpy"
+#define DEVICE_SERVER_PATH "/sdcard/data/local/tmp/scrcpy-server.jar"
+#define SOCKET_NAME "qtscrcpy"
+#define DEVICE_NAME_FIELD_LENGTH 64
 server::server(QObject *parent)
     :QObject(parent)
 {
     connect(&m_workProcess, &AdbProcess::adbProcessResult, this, &server::onWorkProcessResult);
     connect(&m_serverProcess, &AdbProcess::adbProcessResult, this, &server::onWorkProcessResult);
+    connect(&m_serverSocket, &QTcpServer::newConnection, this,[this](){
+        m_deviceSocket = m_serverSocket.nextPendingConnection(); //一旦建立成功，server.jar会自动返回设备名称、大小
+        QString deviceName;
+        QSize size;
+        if (m_deviceSocket && m_deviceSocket->isValid() && readInfo(deviceName, size))
+        {
+            disableTunnelReverse();
+            removeServer();  //可以提前清理，关闭反向代理，因为此时已经建立了m_serverProcess的socket连接。当
+                             //serverprocess这个进程结束后，安卓会自动帮助清除的
+            emit connectToResult(true,deviceName,size);
+        }
+        else
+        {
+            stop();
+            emit connectToResult(false,deviceName,size);
+        }
+    });
 
 }
 
@@ -23,6 +41,18 @@ bool server::start(const QString &serial, quint16 localPort, quint16 maxSize, qu
     //start push server
     m_serverStartStep = SSS_PUSH;
     return startServerByStep();
+}
+
+void server::stop()
+{
+    if (m_deviceSocket){
+        m_deviceSocket->close();
+        //m_deviceSocket->deleteLater();
+    }
+    m_serverProcess.kill();
+    disableTunnelReverse();
+    removeServer();
+    m_serverSocket.close();
 }
 
 void server::onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult)
@@ -71,9 +101,9 @@ void server::onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult)
             }
         }
     }
-    if (sender() == m_serverProcess)
+    if (sender() == &m_serverProcess)
     {
-        if (m_serverStartStep != SSS_EXECUTE_SERVER)
+        if (m_serverStartStep == SSS_EXECUTE_SERVER)
         {
             if (processResult == AdbProcess::AER_SUCCESS_START)
             {
@@ -87,7 +117,7 @@ void server::onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult)
                 m_serverStartStep = SSS_NULL;
                 //remove Server.jar
                 removeServer();
-                emit serverStart
+                emit serverStartResult(false);
             }
         }
     }
@@ -109,11 +139,14 @@ bool server::startServerByStep()
         case SSS_EXECUTE_SERVER:
             m_serverSocket.setMaxPendingConnections(1);
             if (!m_serverSocket.listen(QHostAddress::LocalHost, m_localPort)){
-                qCritical(QString("Couldn't listen on port %1").arg(m_localPort).toStdString());
+                qCritical(QString("Couldn't listen on port %1").arg(m_localPort).toStdString().c_str());
+                m_serverStartStep = SSS_NULL;
+                disableTunnelReverse();
+                removeServer();
+                emit serverStartResult(false);
+                return false;
             }
             stepSuccess = execute();
-            break;
-        case SSS_RUNNING:
             break;
         default:
             break;
@@ -176,15 +209,19 @@ bool server::disableTunnelReverse()
 
 bool server::execute()
 {
+// adb shell CLASSPATH=/sdcard/data/local/tmp/scrcpy-server.jar app_process / com.genymobile.scrcpy.Server 1080 2000000 false ""
     QStringList args;
-    args<<"shell";
-    args<<QString("CLASSPATH=%1").arg(DEVICE_SERVER_PATH);
-    args<<"/";
-    args<<"com.genymobile.scrcpy.Server";
-    args<<QString::number(m_maxSize);
-    args<<QString::number(m_bitRate);
-    args<<"false";
-    args<<"";
+    args << "shell";
+    args << QString("CLASSPATH=%1").arg(DEVICE_SERVER_PATH);
+    args << "app_process";
+    args << "/";
+    args<< "com.genymobile.scrcpy.Server";
+    args << QString::number(m_maxSize);
+    args << QString::number(m_bitRate);
+    args << "false";
+    args << "-";
+    args << "false";
+
     m_serverProcess.execute(m_serial, args);
     return true;
 }
@@ -199,4 +236,27 @@ QString server::getServerPath()
         }
     }
     return m_serverPath;
+}
+
+bool server::readInfo(QString &deviceName, QSize &size)
+{
+    //abk001------------0x0438 0x02d0
+    //        64bit     2b w   2b h
+    unsigned char buf[DEVICE_NAME_FIELD_LENGTH + 4];
+        if (m_deviceSocket->bytesAvailable() <= (DEVICE_NAME_FIELD_LENGTH + 4)) {
+            m_deviceSocket->waitForReadyRead(300);
+        }
+
+        qint64 len = m_deviceSocket->read((char*)buf, sizeof(buf));
+        if (len < DEVICE_NAME_FIELD_LENGTH + 4) {
+            qInfo("Could not retrieve device information");
+            return false;
+        }
+        buf[DEVICE_NAME_FIELD_LENGTH - 1] = '\0'; // in case the client sends garbage
+        // strcpy is safe here, since name contains at least DEVICE_NAME_FIELD_LENGTH bytes
+        // and strlen(buf) < DEVICE_NAME_FIELD_LENGTH
+        deviceName = (char*)buf;
+        size.setWidth((buf[DEVICE_NAME_FIELD_LENGTH] << 8) | buf[DEVICE_NAME_FIELD_LENGTH + 1]);
+        size.setHeight((buf[DEVICE_NAME_FIELD_LENGTH + 2] << 8) | buf[DEVICE_NAME_FIELD_LENGTH + 3]);
+        return true;
 }
