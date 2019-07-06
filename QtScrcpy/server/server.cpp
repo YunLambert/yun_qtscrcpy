@@ -11,7 +11,7 @@ server::server(QObject *parent)
     connect(&m_workProcess, &AdbProcess::adbProcessResult, this, &server::onWorkProcessResult);
     connect(&m_serverProcess, &AdbProcess::adbProcessResult, this, &server::onWorkProcessResult);
     connect(&m_serverSocket, &QTcpServer::newConnection, this,[this](){
-        m_deviceSocket = m_serverSocket.nextPendingConnection(); //一旦建立成功，server.jar会自动返回设备名称、大小
+        m_deviceSocket = dynamic_cast<DeviceSocket*>(m_serverSocket.nextPendingConnection()); //一旦建立成功，server.jar会自动返回设备名称、大小
         QString deviceName;
         QSize size;
         if (m_deviceSocket && m_deviceSocket->isValid() && readInfo(deviceName, size))

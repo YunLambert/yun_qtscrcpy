@@ -5,6 +5,8 @@
 #include <QTcpSocket>
 #include <QSize>
 #include "adbprocess.h"
+#include "devicesocket.h"
+#include "tcpserver.h"
 
 class server:public QObject
 {
@@ -54,8 +56,9 @@ private:
     bool m_serverCopiedToDevice = false; //是否成功将server.jar push到了安卓设备上
     bool m_enableReverse = false;
 
-    QTcpServer m_serverSocket;
-    QTcpSocket* m_deviceSocket = Q_NULLPTR;
+    TcpServer m_serverSocket;
+    //QTcpSocket* m_deviceSocket = Q_NULLPTR;
+    DeviceSocket* m_deviceSocket = Q_NULLPTR;
 };
 
 #endif // SERVER_H
