@@ -2,7 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
-#include "server/server.h"
+#include "server.h"
 #include "adbprocess.h"
 
 namespace Ui {
