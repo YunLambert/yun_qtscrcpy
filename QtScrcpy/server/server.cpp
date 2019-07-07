@@ -55,6 +55,11 @@ void server::stop()
     m_serverSocket.close();
 }
 
+DeviceSocket *server::getDeviceSocket()
+{
+    return m_deviceSocket;
+}
+
 void server::onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult)
 {
     if (sender() == &m_workProcess)

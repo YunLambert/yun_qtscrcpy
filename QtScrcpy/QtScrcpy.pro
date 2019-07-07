@@ -38,6 +38,8 @@ include($$PWD/adb/adb.pri)
 include($$PWD/server/server.pri)
 include($$PWD/decoder/decoder.pri)
 include($$PWD/common/common.pri)
+include($$PWD/render/render.pri)
+
 
 # 包含目录
 INCLUDEPATH += \
@@ -45,6 +47,7 @@ INCLUDEPATH += \
     $$PWD/server \
     $$PWD/decoder \
     $$PWD/common \
+    $$PWD/render \
     $$PWD/third_party/ffmpeg/include
 
 # 依赖模块

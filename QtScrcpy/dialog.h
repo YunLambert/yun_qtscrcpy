@@ -4,6 +4,9 @@
 #include <QDialog>
 #include "server.h"
 #include "adbprocess.h"
+#include "decoder.h"
+#include "frames.h"
+#include "qyuvopenglwidget.h"
 
 namespace Ui {
 class Dialog;
@@ -26,6 +29,9 @@ private:
     Ui::Dialog *ui;
 
     server m_server;
+    Decoder m_decoder;
+    Frames m_frames;
+    QYUVOpenGLWidget* m_videoWidget;
 };
 
 #endif // DIALOG_H

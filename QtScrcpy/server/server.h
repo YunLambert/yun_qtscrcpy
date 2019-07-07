@@ -24,6 +24,7 @@ public:
     server(QObject *parent = Q_NULLPTR);
     bool start(const QString& serial,quint16 localPort, quint16 maxSize, quint32 bitRate);
     void stop();
+    DeviceSocket* getDeviceSocket();
 
 signals:
     void serverStartResult(bool success);

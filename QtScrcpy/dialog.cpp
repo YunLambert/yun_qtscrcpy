@@ -13,11 +13,29 @@ Dialog::Dialog(QWidget *parent) :
     });
     connect(&m_server, &server::connectToResult,this,[this](bool success, const QString& deviceName, const QSize& size){
         qDebug()<<"connectToResult"<<success<<deviceName<<size;
+        if (success)
+        {
+            m_decoder.setDeviceSocket(m_server.getDeviceSocket());
+            m_decoder.startDecode();
+        }
     });
+
+    m_frames.init();
+    m_decoder.setFrames(&m_frames);
+    connect(&m_decoder, &Decoder::onNewFrame, this,[this](){
+        qDebug()<<"Decoder::onNewFrame";
+        m_frames.lock();
+        const AVFrame *frame = m_frames.consumeRenderedFrame();
+        //渲染frame
+        m_frames.unLock();
+    });
+
+    m_videoWidget = new QYUVOpenGLWidget();
 }
 
 Dialog::~Dialog()
 {
+    m_frames.deInit();
     delete ui;
 }
 
@@ -53,6 +71,7 @@ void Dialog::on_startServerBtn_clicked()  //测试代码部分
     myProcess->execute("", arguments);
     */
     m_server.start("",27183,720,8000000);
+    m_videoWidget->show();
 }
 
 void Dialog::on_stopServerBtn_clicked()
