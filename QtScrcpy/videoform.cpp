@@ -19,22 +19,6 @@ VideoForm::VideoForm(const QString& serial, QWidget *parent) :
     setMouseTracking(true);
     ui->videoWidget->setMouseTracking(true);
 
-//    connect(&m_inputConvert, &InputConvertGame::grabCursor, this, [this](bool grab){
-//#ifdef Q_OS_WIN32
-//        if (grab) {
-//            QRect rc(mapToGlobal(ui->videoWidget->pos()), ui->videoWidget->size());
-//            RECT mainRect;
-//            mainRect.left = (LONG)rc.left();
-//            mainRect.right = (LONG)rc.right();
-//            mainRect.top = (LONG)rc.top();
-//            mainRect.bottom = (LONG)rc.bottom();
-//            ClipCursor(&mainRect);
-//        } else {
-//            ClipCursor(Q_NULLPTR);
-//        }
-//#endif
-//    });
-
     connect(&m_server, &server::serverStartResult, this, [this](bool success){
         qDebug() << "server start" << success;
     });
@@ -67,8 +51,6 @@ VideoForm::VideoForm(const QString& serial, QWidget *parent) :
     });
 
     connect(&m_decoder, &Decoder::onNewFrame, this, [this](){
-        // 打印太频繁，浪费cpu
-        //qDebug() << "Decoder::onNewFrame";
         m_frames.lock();
         const AVFrame *frame = m_frames.consumeRenderedFrame();
 
@@ -113,20 +95,20 @@ void VideoForm::mouseMoveEvent(QMouseEvent *event)
     m_inputConvert.mouseEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
 }
 
-//void VideoForm::wheelEvent(QWheelEvent *event)
-//{
-//    m_inputConvert.wheelEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
-//}
+void VideoForm::wheelEvent(QWheelEvent *event)
+{
+    m_inputConvert.wheelEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
+}
 
-//void VideoForm::keyPressEvent(QKeyEvent *event)
-//{
-//    m_inputConvert.keyEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
-//}
+void VideoForm::keyPressEvent(QKeyEvent *event)
+{
+    m_inputConvert.keyEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
+}
 
-//void VideoForm::keyReleaseEvent(QKeyEvent *event)
-//{
-//    m_inputConvert.keyEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
-//}
+void VideoForm::keyReleaseEvent(QKeyEvent *event)
+{
+    m_inputConvert.keyEvent(event, ui->videoWidget->frameSize(), ui->videoWidget->size());
+}
 
 void VideoForm::updateShowSize(const QSize &newSize)
 {

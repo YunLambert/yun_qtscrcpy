@@ -24,17 +24,20 @@ public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
 
+    void outLog(const QString& log, bool newLine = true);
+
 private slots:
     void on_startServerBtn_clicked();
 
     void on_stopServerBtn_clicked();
 
-    void on_touchButton_clicked();
+    void on_updateDevice_clicked();
 
 private:
     Ui::Dialog *ui;
 
     QPointer<VideoForm> m_videoForm;
+    AdbProcess m_adb;
 
 };
 

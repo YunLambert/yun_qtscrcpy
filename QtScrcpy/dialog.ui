@@ -7,51 +7,96 @@
     <x>0</x>
     <y>0</y>
     <width>365</width>
-    <height>176</height>
+    <height>462</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>QtScrcpy V1.0 By YunLambert</string>
   </property>
-  <widget class="QPushButton" name="startServerBtn">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>20</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>start</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="stopServerBtn">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>20</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>stop</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="touchButton">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>60</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>touch</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>无线连接</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,1,1">
+      <item row="0" column="2">
+       <widget class="QPushButton" name="wirelessConnectBtn">
+        <property name="text">
+         <string>连接</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="deviceipEdit"/>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QTextEdit" name="outEdit"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="devicePortEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="topGroupBox">
+     <property name="title">
+      <string>USB连接</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1" colspan="2">
+       <widget class="QLineEdit" name="serialEdit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="devicelabel">
+        <property name="text">
+         <string>连接设备序列号</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="getIPButton">
+        <property name="text">
+         <string>IP地址信息</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="startAdbdButton">
+        <property name="text">
+         <string>启动adbd设备</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="stopServerBtn">
+        <property name="text">
+         <string>关闭服务器</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="startServerBtn">
+        <property name="text">
+         <string>启动服务器</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="updateDevice">
+        <property name="text">
+         <string>更新设备信息</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

@@ -8,7 +8,6 @@
 #include "frames.h"
 #include "qyuvopenglwidget.h"
 #include "inputconvertnormal.h"
-#include "inputconvertgame.h"
 
 
 namespace Ui {
@@ -28,10 +27,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
 
-//    virtual void wheelEvent(QWheelEvent *event);
+    virtual void wheelEvent(QWheelEvent *event);
 
-//    virtual void keyPressEvent(QKeyEvent *event);
-//    virtual void keyReleaseEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyReleaseEvent(QKeyEvent *event);
 
 private:
     void updateShowSize(const QSize &newSize);
@@ -44,7 +43,6 @@ private:
     Decoder m_decoder;
     Frames m_frames;
     InputConvertNormal m_inputConvert;
-//    InputConvertGame m_inputConvert;
 
     QSize m_frameSize;
 };

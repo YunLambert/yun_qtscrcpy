@@ -13,11 +13,36 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    connect(&m_adb, &AdbProcess::adbProcessResult, this, [this](AdbProcess::ADB_EXEC_RESULT processResult){
+        QString log="";
+        bool newLine = true;
+        switch (processResult)
+        {
+        case AdbProcess::AER_SUCCESS_EXEC:
+            QStringList devices = m_adb.getDevicesSerialFromStdOut();
+            if (!devices.isEmpty())
+                ui->serialEdit->setText(devices.at(0));
+            break;
+
+        }
+
+        if (!log.isEmpty())
+        {
+            outLog(log, newLine);
+        }
+    });
 }
 
 Dialog::~Dialog()
 {
     delete ui;
+}
+
+void Dialog::outLog(const QString &log, bool newLine)
+{
+    ui->outEdit->append(log);
+    if (newLine)
+        ui->outEdit->append("<br/>");
 }
 
 void Dialog::on_startServerBtn_clicked()  //测试代码部分
@@ -66,8 +91,8 @@ void Dialog::on_stopServerBtn_clicked()
 //    m_server.stop();
 }
 
-void Dialog::on_touchButton_clicked()
-{
+//void Dialog::on_touchButton_clicked()
+//{
 //    QByteArray byteArray;
 //    QBuffer buffer(&byteArray);
 //    buffer.open(QBuffer::WriteOnly);
@@ -95,4 +120,11 @@ void Dialog::on_touchButton_clicked()
 
 
 //    buffer.close();
+//}
+
+void Dialog::on_updateDevice_clicked()
+{
+    outLog("update devices", false);
+    m_adb.execute("",QStringList()<<"devices");
+
 }
