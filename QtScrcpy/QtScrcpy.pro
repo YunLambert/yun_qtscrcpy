@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,13 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        dialog.cpp
+        dialog.cpp \
+    videoform.cpp
 
 HEADERS += \
-        dialog.h
+        dialog.h \
+    videoform.h
 
 FORMS += \
-        dialog.ui
+        dialog.ui \
+    videoform.ui
 
 # 子模块
 include($$PWD/adb/adb.pri)
@@ -39,6 +42,8 @@ include($$PWD/server/server.pri)
 include($$PWD/decoder/decoder.pri)
 include($$PWD/common/common.pri)
 include($$PWD/render/render.pri)
+include($$PWD/android/android.pri)
+include($$PWD/inputcontrol/inputcontrol.pri)
 
 
 # 包含目录
@@ -48,6 +53,8 @@ INCLUDEPATH += \
     $$PWD/decoder \
     $$PWD/common \
     $$PWD/render \
+    $$PWD/android \
+    $$PWD/inputcontrol \
     $$PWD/third_party/ffmpeg/include
 
 # 依赖模块

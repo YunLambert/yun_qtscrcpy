@@ -2,16 +2,20 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QPointer>
 #include "server.h"
 #include "adbprocess.h"
 #include "decoder.h"
 #include "frames.h"
 #include "qyuvopenglwidget.h"
+#include "controller.h"
+#include "videoform.h"
 
 namespace Ui {
 class Dialog;
 }
 
+class VideoForm;
 class Dialog : public QDialog
 {
     Q_OBJECT
@@ -25,13 +29,13 @@ private slots:
 
     void on_stopServerBtn_clicked();
 
+    void on_touchButton_clicked();
+
 private:
     Ui::Dialog *ui;
 
-    server m_server;
-    Decoder m_decoder;
-    Frames m_frames;
-    QYUVOpenGLWidget* m_videoWidget;
+    QPointer<VideoForm> m_videoForm;
+
 };
 
 #endif // DIALOG_H

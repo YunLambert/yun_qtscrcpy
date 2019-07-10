@@ -2,40 +2,21 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include <QDebug>
+#include <QBuffer>
+#include "keycodes.h"
+#include "input.h"
+#include "controlevent.h"
+
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-    connect(&m_server, &server::serverStartResult,this,[this](bool success){
-        qDebug()<<"server start"<<success;
-    });
-    connect(&m_server, &server::connectToResult,this,[this](bool success, const QString& deviceName, const QSize& size){
-        qDebug()<<"connectToResult"<<success<<deviceName<<size;
-        if (success)
-        {
-            m_decoder.setDeviceSocket(m_server.getDeviceSocket());
-            m_decoder.startDecode();
-        }
-    });
-
-    m_frames.init();
-    m_decoder.setFrames(&m_frames);
-    connect(&m_decoder, &Decoder::onNewFrame, this,[this](){
-        qDebug()<<"Decoder::onNewFrame";
-        m_frames.lock();
-        const AVFrame *frame = m_frames.consumeRenderedFrame();
-        //渲染frame
-        m_frames.unLock();
-    });
-
-    m_videoWidget = new QYUVOpenGLWidget();
 }
 
 Dialog::~Dialog()
 {
-    m_frames.deInit();
     delete ui;
 }
 
@@ -70,11 +51,48 @@ void Dialog::on_startServerBtn_clicked()  //测试代码部分
     //test reverseremove: myProcess->reverseRemove("", "scrcpy");
     myProcess->execute("", arguments);
     */
-    m_server.start("",27183,720,8000000);
-    m_videoWidget->show();
+    if (!m_videoForm) {
+        m_videoForm = new VideoForm("");
+    }
+    m_videoForm->show();
+//    m_server.start("",27183,720,8000000);
+//    m_videoWidget->show();
 }
 
 void Dialog::on_stopServerBtn_clicked()
 {
-    m_server.stop();
+    if (m_videoForm)
+        m_videoForm->close();
+//    m_server.stop();
+}
+
+void Dialog::on_touchButton_clicked()
+{
+//    QByteArray byteArray;
+//    QBuffer buffer(&byteArray);
+//    buffer.open(QBuffer::WriteOnly);
+//    //构造控制指令
+//    buffer.putChar(2); //代表是一个mouse指令
+//    buffer.putChar(AMOTION_EVENT_ACTION_DOWN); //mouse是一个按下指令
+//    buffer.putChar(AMOTION_EVENT_BUTTON_PRIMARY >> 24);
+//    buffer.putChar(AMOTION_EVENT_BUTTON_PRIMARY >> 16);
+//    buffer.putChar(AMOTION_EVENT_BUTTON_PRIMARY >> 8);
+//    buffer.putChar(AMOTION_EVENT_BUTTON_PRIMARY);
+
+//    int x = 100;
+//    buffer.putChar(x>>8);
+//    buffer.putChar(x);
+
+//    int y=200;
+//    buffer.putChar(y>>8);
+//    buffer.putChar(y);
+
+//    buffer.putChar(m_videoWidget->frameSize().width() >> 8);
+//    buffer.putChar(m_videoWidget->frameSize().width());
+//    buffer.putChar(m_videoWidget->frameSize().height() >> 8);
+//    buffer.putChar(m_videoWidget->frameSize().height());
+
+
+
+//    buffer.close();
 }

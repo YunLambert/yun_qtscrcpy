@@ -125,6 +125,11 @@ void server::onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult)
                 emit serverStartResult(false);
             }
         }
+        else if (m_serverStartStep == SSS_RUNNING)
+        {
+            m_serverStartStep = SSS_NULL;
+            emit onServerStop();
+        }
     }
 }
 

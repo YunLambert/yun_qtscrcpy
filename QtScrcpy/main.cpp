@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "decoder.h"
+#include <QDebug>
 #include <QApplication>
 
 int main(int argc, char *argv[])

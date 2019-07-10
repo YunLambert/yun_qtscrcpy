@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="startServerBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>60</y>
+     <x>70</x>
+     <y>20</y>
      <width>80</width>
      <height>20</height>
     </rect>
@@ -29,14 +29,27 @@
   <widget class="QPushButton" name="stopServerBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>110</y>
+     <x>190</x>
+     <y>20</y>
      <width>80</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>stop</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="touchButton">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>60</y>
+     <width>80</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>touch</string>
    </property>
   </widget>
  </widget>

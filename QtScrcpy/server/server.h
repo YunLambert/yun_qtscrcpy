@@ -29,6 +29,7 @@ public:
 signals:
     void serverStartResult(bool success);
     void connectToResult(bool success, const QString& deviceName, const QSize& size);
+    void onServerStop();
 
 private slots:
     void onWorkProcessResult(AdbProcess::ADB_EXEC_RESULT processResult);
