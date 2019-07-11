@@ -13,34 +13,58 @@
   <property name="windowTitle">
    <string>QtScrcpy V1.0 By YunLambert</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(85, 85, 127);
+color:rgb(85, 255, 255)</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(192, 190, 255);
+color:rgb(85, 0, 255)</string>
+     </property>
      <property name="title">
       <string>无线连接</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,1,1">
       <item row="0" column="2">
        <widget class="QPushButton" name="wirelessConnectBtn">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>连接</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLineEdit" name="deviceipEdit"/>
+       <widget class="QLineEdit" name="deviceipEdit">
+        <property name="placeholderText">
+         <string>192.168.0.1</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0" colspan="3">
        <widget class="QTextEdit" name="outEdit"/>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="devicePortEdit"/>
+       <widget class="QLineEdit" name="devicePortEdit">
+        <property name="placeholderText">
+         <string>5555</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="topGroupBox">
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(192, 190, 255);
+color:rgb(85, 0, 255)</string>
+     </property>
      <property name="title">
       <string>USB连接</string>
      </property>
@@ -60,6 +84,10 @@
       </item>
       <item row="3" column="1">
        <widget class="QPushButton" name="getIPButton">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>IP地址信息</string>
         </property>
@@ -67,6 +95,10 @@
       </item>
       <item row="3" column="0">
        <widget class="QPushButton" name="startAdbdButton">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>启动adbd设备</string>
         </property>
@@ -74,6 +106,10 @@
       </item>
       <item row="1" column="2">
        <widget class="QPushButton" name="stopServerBtn">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>关闭服务器</string>
         </property>
@@ -81,6 +117,10 @@
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="startServerBtn">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>启动服务器</string>
         </property>
@@ -88,6 +128,10 @@
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="updateDevice">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(0, 85, 127);
+color:rgb(85, 255, 255)</string>
+        </property>
         <property name="text">
          <string>更新设备信息</string>
         </property>

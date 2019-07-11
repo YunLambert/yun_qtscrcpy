@@ -33,6 +33,12 @@ private slots:
 
     void on_updateDevice_clicked();
 
+    void on_startAdbdButton_clicked();
+
+    void on_getIPButton_clicked();
+
+    void on_wirelessConnectBtn_clicked();
+
 private:
     Ui::Dialog *ui;
 

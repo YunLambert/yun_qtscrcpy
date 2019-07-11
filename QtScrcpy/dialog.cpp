@@ -18,12 +18,31 @@ Dialog::Dialog(QWidget *parent) :
         bool newLine = true;
         switch (processResult)
         {
-        case AdbProcess::AER_SUCCESS_EXEC:
-            QStringList devices = m_adb.getDevicesSerialFromStdOut();
-            if (!devices.isEmpty())
-                ui->serialEdit->setText(devices.at(0));
+        case AdbProcess::AER_SUCCESS_START:
+            log = "adb run";
+            newLine = false;
             break;
-
+        case AdbProcess::AER_ERROR_EXEC:
+            log = m_adb.getErrorOut();
+            break;
+        case AdbProcess::AER_ERROR_MISSING_BINARY:
+            log = "adb not found";
+            break;
+        case AdbProcess::AER_SUCCESS_EXEC:
+            QStringList args = m_adb.arguments();
+            if (args.contains("devices"))
+            {
+                QStringList devices = m_adb.getDevicesSerialFromStdOut();
+                if (!devices.isEmpty())
+                    ui->serialEdit->setText(devices.at(0));
+            }
+            if (args.contains("show") && args.contains("wlan0"))
+            {
+                QString ip=m_adb.getDeviceIPFromStdOut();
+                if (!ip.isEmpty())
+                    ui->deviceipEdit->setText(ip);
+            }
+            break;
         }
 
         if (!log.isEmpty())
@@ -127,4 +146,42 @@ void Dialog::on_updateDevice_clicked()
     outLog("update devices", false);
     m_adb.execute("",QStringList()<<"devices");
 
+}
+
+void Dialog::on_startAdbdButton_clicked()
+{
+    outLog("start devices adbd....", false);
+    QStringList adbArgs;
+    adbArgs<<"tcpip";
+    adbArgs<<"5555";
+    m_adb.execute(ui->serialEdit->text().trimmed(),adbArgs);
+}
+
+void Dialog::on_getIPButton_clicked()
+{
+    outLog("get ip....", false);
+    QStringList adbArgs;
+    adbArgs<<"shell";
+    adbArgs<<"ip";
+    adbArgs<<"-f";
+    adbArgs<<"inet";
+    adbArgs<<"addr";
+    adbArgs<<"show";
+    adbArgs<<"wlan0";
+    m_adb.execute(ui->serialEdit->text().trimmed(),adbArgs);
+}
+
+void Dialog::on_wirelessConnectBtn_clicked()
+{
+    outLog("wireless connect....", false);
+    QString addr = ui->deviceipEdit->text().trimmed();
+    if (!ui->devicePortEdit->text().isEmpty())
+    {
+        addr += ":";
+        addr += ui->devicePortEdit->text().trimmed();
+    }
+    QStringList adbArgs;
+    adbArgs<<"connect";
+    adbArgs<<addr;
+    m_adb.execute(ui->serialEdit->text().trimmed(),adbArgs);
 }
