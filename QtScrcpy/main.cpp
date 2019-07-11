@@ -10,8 +10,8 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 int main(int argc, char *argv[])
 {
     g_oldMessageHandler = qInstallMessageHandler(myMessageOutput);
-    qputenv("QTSCRCPY_ADB_PATH", "..\\qtscrcpy\\QtScrcpy\\third_party\\adb\\win\\adb.exe");
-    qputenv("QTSCRCPY_SERVER_PATH", "..\\qtscrcpy\\QtScrcpy\\third_party\\scrcpy-server.jar");
+    qputenv("QTSCRCPY_ADB_PATH", "..\\..\\..\\third_party\\adb\\win\\adb.exe");
+    qputenv("QTSCRCPY_SERVER_PATH", "..\\..\\..\\third_party\\scrcpy-server.jar");
 
     Decoder::init();
 

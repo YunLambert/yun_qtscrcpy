@@ -57,9 +57,58 @@ INCLUDEPATH += \
     $$PWD/inputcontrol \
     $$PWD/third_party/ffmpeg/include
 
+# *************************************************
+# Win平台
+win32 {
+# 输出目录
+CONFIG(debug, debug|release) {
+    DESTDIR = $$PWD/output/win/debug
+}else{
+    DESTDIR = $$PWD/output/win/release
+}
 # 依赖模块
 LIBS += \
     -L$$PWD/third_party/ffmpeg/lib -lavformat \
     -L$$PWD/third_party/ffmpeg/lib -lavcodec \
     -L$$PWD/third_party/ffmpeg/lib -lavutil \
     -L$$PWD/third_party/ffmpeg/lib -lswscale \
+}
+# *************************************************
+
+# *************************************************
+# macos平台
+macos {
+# 输出目录
+CONFIG(debug, debug|release) {
+    DESTDIR = $$PWD/output/mac/debug
+}else{
+    DESTDIR = $$PWD/output/mac/release
+}
+# 依赖模块
+LIBS += \
+    -L$$PWD/third_party/ffmpeg/lib -lavformat.58 \
+    -L$$PWD/third_party/ffmpeg/lib -lavcodec.58 \
+    -L$$PWD/third_party/ffmpeg/lib -lavutil.56 \
+    -L$$PWD/third_party/ffmpeg/lib -lswscale.5 \
+}
+# *************************************************
+
+
+# *************************************************
+# Linux平台
+linux {
+# 输出目录
+CONFIG(debug, debug|release) {
+    DESTDIR = $$PWD/output/linux/debug
+}else{
+    DESTDIR = $$PWD/output/linux/release
+}
+# 依赖模块
+LIBS += \
+    -L$$PWD/third_party/ffmpeg/lib -lavformat \
+    -L$$PWD/third_party/ffmpeg/lib -lavcodec \
+    -L$$PWD/third_party/ffmpeg/lib -lavutil \
+    -L$$PWD/third_party/ffmpeg/lib -lswscale \
+}
+# *************************************************
+
